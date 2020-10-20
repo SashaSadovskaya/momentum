@@ -16,8 +16,13 @@ body {
   color: #000000;
 }
 
-#time {
+#time{
   font-size: 7rem;
+  margin-bottom: 3rem;
+}
+#day{
+  font-size: 3rem;
+  margin-bottom: 3rem;
 }
 
 h1 {
