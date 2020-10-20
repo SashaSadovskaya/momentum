@@ -2,6 +2,7 @@ const time = document.querySelector('#time');
 const greeting = document.querySelector('#greeting');
 const name = document.querySelector('#name');
 const focus = document.querySelector('#focus');
+const input = document.querySelector("input");
 
 
 function showTime () {
@@ -43,7 +44,12 @@ function addZero(n) {
 function setBgGreet() {
   let today = new Date(),
     hour = today.getHours();
-  if( hour < 12){
+  if (hour < 6){
+    document.body.style.backgroundImage = 'url("assets/images/night/01.jpg")';
+    greeting.textContent = 'Good Night';
+    document.body.style.color ='white';
+  }
+  else if( hour < 12){
     document.body.style.backgroundImage = 'url("assets/images/morning/01.jpg")';
     greeting.textContent = 'Good Morning';
   }
@@ -51,7 +57,7 @@ function setBgGreet() {
     document.body.style.backgroundImage = "url('assets/images/day/02.jpg')";
     greeting.textContent = 'Good Afternoon';
   }
-  else {
+  else if(hour < 24){
     document.body.style.backgroundImage = 'url("assets/images/evening/01.jpg")';
     greeting.textContent = 'Good Evening';
     document.body.style.color ='white';
