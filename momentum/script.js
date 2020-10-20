@@ -2,22 +2,36 @@ const time = document.querySelector('#time');
 const greeting = document.querySelector('#greeting');
 const name = document.querySelector('#name');
 const focus = document.querySelector('#focus');
-let today = new Date();
 
-
-const showAmPm = true;
 
 function showTime () {
-  let hour = today.getHours(),
+  let today = new Date(),
+    day = today.getDay(),
+    hour = today.getHours(),
     min = today.getMinutes(),
-    sec= today.getSeconds();
-  const amPm = hour >= 12 ? "PM" : "AM";
+    sec = today.getSeconds();
 
-  hour = hour % 12 || 12;
+  function dayOfWeek (day){
+    switch (day) {
+      case 1:
+        return 'Понедельник';
+      case 2:
+        return 'Вторник';
+      case 3:
+        return 'Среда';
+      case 4:
+        return 'Четверг';
+      case 5:
+        return 'Пятница';
+      case 6:
+        return 'Суббота';
+      default:
+        return 'Воскресение'
+    }
+  }
 
-  time.innerHTML = `${hour}<span>:</span>${addZero(min)}<span>:</span>${addZero(
-    sec
-  )} ${showAmPm ? amPm : ''}`;
+
+  time.innerHTML = `${dayOfWeek(day)} ${hour}<span>:</span>${addZero(min)}<span>:</span>${addZero(sec)}`;
 
   setTimeout(showTime, 1000)
 }
@@ -27,7 +41,8 @@ function addZero(n) {
 }
 
 function setBgGreet() {
-  let hour = today.getHours();
+  let today = new Date(),
+    hour = today.getHours();
   if( hour < 12){
     document.body.style.backgroundImage = 'url("assets/images/morning/01.jpg")';
     greeting.textContent = 'Good Morning';
