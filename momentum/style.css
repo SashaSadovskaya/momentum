@@ -16,6 +16,26 @@ body {
   color: #000000;
 }
 
+#btnChangePic{
+  text-decoration: none;
+  outline: none;
+  color: white;
+  padding: 10px 20px;
+  margin: 10px 15px;
+  border-radius: 10px;
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background-image: linear-gradient(to right, #9EEFE1 0%, #4830F0 51%, #9EEFE1 100%);
+  background-size: 200% auto;
+  box-shadow: 0 0 20px rgba(0,0,0,.1);
+  transition: .5s;
+}
+
+#btnChangePic:hover {
+  background-position: right center;
+}
+
 #time{
   font-size: 7rem;
   margin-bottom: 3rem;

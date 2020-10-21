@@ -3,7 +3,10 @@ const greeting = document.querySelector('#greeting');
 const name = document.querySelector('#name');
 const focus = document.querySelector('#focus');
 const dayMonth = document.querySelector('#day');
-
+const btnChangePic = document.querySelector('#btnChangePic');
+let currentHour = new Date().getHours();
+let currentHourChange = currentHour;
+setBgGreet(currentHour);
 
 function showTime () {
   let today = new Date(),
@@ -64,6 +67,11 @@ function showTime () {
   dayMonth.innerHTML = `${dayOfWeek(day)}, ${date} ${setMonth(month)}`;
   time.innerHTML = `${hour}<span>:</span>${addZero(min)}<span>:</span>${addZero(sec)}`;
 
+  if (hour > currentHour){
+    currentHour = hour;
+    setBgGreet(currentHour);
+  }
+
   setTimeout(showTime, 1000)
 }
 
@@ -71,28 +79,32 @@ function addZero(n) {
   return (parseInt(n, 10) < 10 ? '0': '') + n ;
 }
 
-function setBgGreet() {
-  let today = new Date(),
-    hour = today.getHours();
+function setBgGreet(hour) {
   if (hour < 6){
-    document.body.style.backgroundImage = `url("assets/images/night/0${hour}.jpg")`;
+    document.body.style.backgroundImage = `url("assets/images/${hour}.jpg")`;
     greeting.textContent = 'Good Night';
     document.body.style.color ='white';
   }
   else if( hour < 12){
-    document.body.style.backgroundImage = `url("assets/images/morning/0${hour}.jpg")`;
+    document.body.style.backgroundImage = `url("assets/images/${hour}.jpg")`;
     greeting.textContent = 'Good Morning';
   }
   else if (hour < 18){
-    document.body.style.backgroundImage = `url('assets/images/day/${hour}.jpg')`;
+    document.body.style.backgroundImage = `url('assets/images/${hour}.jpg')`;
     greeting.textContent = 'Good Afternoon';
   }
   else if(hour < 24){
-    document.body.style.backgroundImage = `url("assets/images/evening/${hour - 5}.jpg")`;
+    document.body.style.backgroundImage = `url("assets/images/${hour}.jpg")`;
     greeting.textContent = 'Good Evening';
     document.body.style.color ='white';
   }
 }
+
+function changeBgImg(e) {
+  currentHourChange = currentHourChange === 23 ? 0 : currentHourChange + 1;
+  document.body.style.backgroundImage = `url("assets/images/${currentHourChange}.jpg")`;
+}
+
 
 function setName(e) {
   if (e.type === 'keypress'){
@@ -145,7 +157,8 @@ name.addEventListener('blur', setName);
 focus.addEventListener('keypress', setFocus);
 focus.addEventListener('blur', setFocus);
 
+btnChangePic.addEventListener('click', changeBgImg);
+
 showTime();
-setBgGreet();
 getName();
 getFocus();
