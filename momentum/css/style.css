@@ -66,7 +66,7 @@ h2 {
   margin-bottom: 3rem;
 }
 
-.temperature{
+.temperature, .weather-description, .weather-humidity{
   margin-right: 1rem;
 }
 

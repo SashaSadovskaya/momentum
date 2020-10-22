@@ -15,6 +15,8 @@ const weatherIcon = document.querySelector('.weather-icon');
 const temperature = document.querySelector('.temperature');
 const weatherDescription = document.querySelector('.weather-description');
 const city = document.querySelector('.city');
+const humidity = document.querySelector('.weather-humidity');
+const wind = document.querySelector('.weather-wind');
 
 
 function showTime () {
@@ -194,8 +196,33 @@ async function getWeather() {
   weatherIcon.className = 'weather-icon owf';
   weatherIcon.classList.add(`owf-${data.weather[0].id}`);
   temperature.textContent = `${Math.round(data.main.temp)}°C`;
-  weatherDescription.textContent = data.weather[0].description;
+  // weatherDescription.textContent = data.weather[0].description;
+  humidity.textContent = `Humidity: ${data.main.humidity}%`;
+  wind.textContent =`Wind: ${data.wind.speed} m/c`;
+  console.log(data)
 }
+
+function setCityToLS(e) {
+  if (e.type === 'keypress'){
+    if (e.which === 13){
+      localStorage.setItem('city', e.target.innerText);
+      city.blur();
+    }
+  }
+  else {
+    localStorage.setItem('city', e.target.innerText)
+  }
+}
+
+function getCity() {
+  if (localStorage.getItem('city') === null){
+    city.textContent = 'Choose the city';
+  }
+  else {
+    city.textContent = localStorage.getItem('city')
+  }
+}
+
 
 function setCity(event) {
   if (event.code === 'Enter') {
@@ -211,6 +238,9 @@ name.addEventListener('blur', setName);
 focus.addEventListener('keypress', setFocus);
 focus.addEventListener('blur', setFocus);
 
+city.addEventListener('keypress', setCityToLS);
+city.addEventListener('blur', setCityToLS);
+
 btnChangePic.addEventListener('click', changeBgImg);
 btnQuote.addEventListener('click', changeQuote);
 
@@ -218,6 +248,7 @@ btnQuote.addEventListener('click', changeQuote);
 showTime();
 getName();
 getFocus();
+getCity();
 
 document.addEventListener('DOMContentLoaded', getWeather);
 city.addEventListener('keypress', setCity);
