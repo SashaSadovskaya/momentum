@@ -7,6 +7,9 @@ const btnChangePic = document.querySelector('#btnChangePic');
 let currentHour = new Date().getHours();
 let currentHourChange = currentHour;
 setBgGreet(currentHour);
+const blockquote = document.querySelector('blockquote');
+const figcaption = document.querySelector('figcaption');
+const btnQuote = document.querySelector('#btnQuote');
 
 function showTime () {
   let today = new Date(),
@@ -151,6 +154,26 @@ function getFocus() {
   }
 }
 
+async function getQuote(e) {
+  const url = `https://type.fit/api/quotes`;
+  const res = await fetch(url);
+
+  return await res.json();
+}
+
+let quotes;
+let currentQuote = 0;
+function changeQuote(){
+  if (currentQuote >= quotes.length - 1){
+    currentQuote = 0;
+  }
+  const quote = quotes[currentQuote];
+  currentQuote++;
+
+  blockquote.textContent = quote.text;
+  figcaption.textContent = quote.author;
+}
+
 name.addEventListener('keypress', setName);
 name.addEventListener('blur', setName);
 
@@ -158,7 +181,11 @@ focus.addEventListener('keypress', setFocus);
 focus.addEventListener('blur', setFocus);
 
 btnChangePic.addEventListener('click', changeBgImg);
+btnQuote.addEventListener('click', changeQuote);
 
 showTime();
 getName();
 getFocus();
+document.addEventListener('DOMContentLoaded', async () => {
+  quotes = await getQuote();
+});

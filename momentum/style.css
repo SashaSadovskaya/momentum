@@ -14,9 +14,11 @@ body {
   height: 100vh;
   background-size: cover;
   color: #000000;
+  transition: background-image 1s ease-in-out;
 }
 
-#btnChangePic{
+
+button{
   text-decoration: none;
   outline: none;
   color: white;
@@ -41,6 +43,7 @@ body {
   margin-bottom: 3rem;
 }
 #day{
+  margin-top: 4rem;
   font-size: 3rem;
   margin-bottom: 3rem;
 }
