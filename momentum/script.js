@@ -10,6 +10,11 @@ setBgGreet(currentHour);
 const blockquote = document.querySelector('blockquote');
 const figcaption = document.querySelector('figcaption');
 const btnQuote = document.querySelector('#btnQuote');
+const appID = '8e1eecd6fc68b8490908497ecf8ca301';
+const weatherIcon = document.querySelector('.weather-icon');
+const temperature = document.querySelector('.temperature');
+const weatherDescription = document.querySelector('.weather-description');
+
 
 function showTime () {
   let today = new Date(),
@@ -103,7 +108,7 @@ function setBgGreet(hour) {
   }
 }
 
-function changeBgImg(e) {
+function changeBgImg() {
   currentHourChange = currentHourChange === 23 ? 0 : currentHourChange + 1;
   document.body.style.backgroundImage = `url("assets/images/${currentHourChange}.jpg")`;
 }
@@ -154,7 +159,7 @@ function getFocus() {
   }
 }
 
-async function getQuote(e) {
+async function getQuote() {
   const url = `https://type.fit/api/quotes`;
   const res = await fetch(url);
 
@@ -162,7 +167,12 @@ async function getQuote(e) {
 }
 
 let quotes;
-let currentQuote = 0;
+let currentQuote = getRandomInt(1000);
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
 function changeQuote(){
   if (currentQuote >= quotes.length - 1){
     currentQuote = 0;
@@ -173,6 +183,19 @@ function changeQuote(){
   blockquote.textContent = quote.text;
   figcaption.textContent = quote.author;
 }
+
+//Get weather
+
+async function getWeather() {
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=Минск&lang=ru&appid=${appID}&units=metric`;
+  const res = await fetch(url);
+  const data = await res.json();
+  weatherIcon.classList.add(`owf-${data.weather[0].id}`);
+  temperature.textContent = `${data.main.temp}°C`;
+  weatherDescription.textContent = data.weather[0].description;
+}
+getWeather();
+
 
 name.addEventListener('keypress', setName);
 name.addEventListener('blur', setName);
@@ -188,4 +211,5 @@ getName();
 getFocus();
 document.addEventListener('DOMContentLoaded', async () => {
   quotes = await getQuote();
+  changeQuote();
 });
