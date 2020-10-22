@@ -14,6 +14,7 @@ const appID = '8e1eecd6fc68b8490908497ecf8ca301';
 const weatherIcon = document.querySelector('.weather-icon');
 const temperature = document.querySelector('.temperature');
 const weatherDescription = document.querySelector('.weather-description');
+const city = document.querySelector('.city');
 
 
 function showTime () {
@@ -187,14 +188,21 @@ function changeQuote(){
 //Get weather
 
 async function getWeather() {
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=Минск&lang=ru&appid=${appID}&units=metric`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.textContent}&lang=ru&appid=${appID}&units=metric`;
   const res = await fetch(url);
   const data = await res.json();
+  weatherIcon.className = 'weather-icon owf';
   weatherIcon.classList.add(`owf-${data.weather[0].id}`);
-  temperature.textContent = `${data.main.temp}°C`;
+  temperature.textContent = `${Math.round(data.main.temp)}°C`;
   weatherDescription.textContent = data.weather[0].description;
 }
-getWeather();
+
+function setCity(event) {
+  if (event.code === 'Enter') {
+    getWeather();
+    city.blur();
+  }
+}
 
 
 name.addEventListener('keypress', setName);
@@ -206,9 +214,14 @@ focus.addEventListener('blur', setFocus);
 btnChangePic.addEventListener('click', changeBgImg);
 btnQuote.addEventListener('click', changeQuote);
 
+
 showTime();
 getName();
 getFocus();
+
+document.addEventListener('DOMContentLoaded', getWeather);
+city.addEventListener('keypress', setCity);
+
 document.addEventListener('DOMContentLoaded', async () => {
   quotes = await getQuote();
   changeQuote();
