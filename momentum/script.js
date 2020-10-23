@@ -16,6 +16,7 @@ const temperature = document.querySelector('.temperature');
 const city = document.querySelector('.city');
 const humidity = document.querySelector('.weather-humidity');
 const wind = document.querySelector('.weather-wind');
+const error = document.querySelector("#error");
 
 
 function showTime () {
@@ -187,46 +188,51 @@ function changeQuote(){
 //Get weather
 
 async function getWeather() {
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.textContent}&lang=ru&appid=${appID}&units=metric`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.textContent}&lang=en&appid=${appID}&units=metric`;
   const res = await fetch(url);
   const data = await res.json();
+  if(res.status !== 200){
+    error.textContent = data.message;
+    city.textContent = localStorage.getItem('city');
+    return false;
+  }
+
+  error.textContent = '';
   weatherIcon.className = 'weather-icon owf';
   weatherIcon.classList.add(`owf-${data.weather[0].id}`);
   temperature.textContent = `${Math.round(data.main.temp)}°C`;
-  // weatherDescription.textContent = data.weather[0].description;
   humidity.textContent = `Humidity: ${data.main.humidity}%`;
   wind.textContent =`Wind: ${Math.round(data.wind.speed)} m/c`;
+  return true;
 }
 
-function setCityToLS(e) {
-  if (e.type === 'keypress'){
-    if (e.which === 13){
-      localStorage.setItem('city', e.target.innerText);
-      city.blur();
-    }
+
+async function setCityToLS(e) {
+  const value = e.target.innerText;
+  if(value.length > 0 && await getWeather())
+    localStorage.setItem('city', value);
+  else
+    getCity();
+}
+
+function setCity(event) {
+  if (event.code === 'Enter') {
+    city.blur();
   }
-  else {
-    localStorage.setItem('city', e.target.innerText)
-  }
+}
+
+function renderCity(value) {
+  city.textContent = value ? value : '';
 }
 
 function getCity() {
-  if (localStorage.getItem('city') === ''){
-    city.textContent = 'Choose the city';
+  if (localStorage.getItem('city') === null){
+    city.textContent = '[Enter city]';
   }
   else {
     city.textContent = localStorage.getItem('city')
   }
 }
-
-
-function setCity(event) {
-  if (event.code === 'Enter') {
-    getWeather();
-    city.blur();
-  }
-}
-
 
 name.addEventListener('keypress', (e) => {
   if(e.which === 13) name.blur();
@@ -245,8 +251,15 @@ focus.addEventListener('focus', () => {
   renderFocus('');
 });
 
-city.addEventListener('keypress', setCityToLS);
+city.addEventListener('keypress', (e) => {
+  if(e.which === 13) city.blur();
+});
+
 city.addEventListener('blur', setCityToLS);
+city.addEventListener('focus', () => {
+  renderCity('');
+});
+
 
 btnChangePic.addEventListener('click', changeBgImg);
 btnQuote.addEventListener('click', changeQuote);
