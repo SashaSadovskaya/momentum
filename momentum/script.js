@@ -13,7 +13,6 @@ const btnQuote = document.querySelector('#btnQuote');
 const appID = '8e1eecd6fc68b8490908497ecf8ca301';
 const weatherIcon = document.querySelector('.weather-icon');
 const temperature = document.querySelector('.temperature');
-const weatherDescription = document.querySelector('.weather-description');
 const city = document.querySelector('.city');
 const humidity = document.querySelector('.weather-humidity');
 const wind = document.querySelector('.weather-wind');
@@ -31,48 +30,48 @@ function showTime () {
   function dayOfWeek (day){
     switch (day) {
       case 1:
-        return 'Понедельник';
+        return 'Monday';
       case 2:
-        return 'Вторник';
+        return 'Tuesday';
       case 3:
-        return 'Среда';
+        return 'Wednesday';
       case 4:
-        return 'Четверг';
+        return 'Thursday';
       case 5:
-        return 'Пятница';
+        return 'Friday';
       case 6:
-        return 'Суббота';
+        return 'Saturday';
       default:
-        return 'Воскресение'
+        return 'Sunday'
     }
   }
 
   function setMonth (month) {
     switch (month) {
       case 0:
-        return 'января';
+        return 'January';
       case 1:
-        return 'февраля';
+        return 'February';
       case 2:
-        return 'марта';
+        return 'March';
       case 3:
-        return 'апреля';
+        return 'April';
       case 4:
-        return 'мая';
+        return 'May';
       case 5:
-        return 'июня';
+        return 'June';
       case 6:
-        return 'июля';
+        return 'July';
       case 7:
-        return 'августа';
+        return 'August';
       case 8:
-        return 'сентября';
+        return 'September';
       case 9:
-        return 'октября';
+        return 'October';
       case 10:
-        return 'ноября';
+        return 'November';
       default:
-        return 'декабря';
+        return 'December';
     }
   }
   dayMonth.innerHTML = `${dayOfWeek(day)}, ${date} ${setMonth(month)}`;
@@ -116,30 +115,20 @@ function changeBgImg() {
   document.body.style.backgroundImage = `url("assets/images/${currentHourChange}.jpg")`;
 }
 
-
 function setName(e) {
-  if (e.type === 'keypress'){
-    if (e.which === 13){
-      localStorage.setItem('name', e.target.innerText);
-      name.blur();
-    }
-  }
-  else {
-    localStorage.setItem('name', e.target.innerText)
-  }
+  const value = e.target.innerText;
+  if(value.length > 0 )
+    localStorage.setItem('name', value);
+  else
+    getName();
 }
 
-
 function setFocus(e) {
-  if (e.type === 'keypress'){
-    if (e.which === 13){
-      localStorage.setItem('focus', e.target.innerText);
-      focus.blur();
-    }
-  }
-  else {
-    localStorage.setItem('focus', e.target.innerText)
-  }
+  const value = e.target.innerText;
+  if(value.length > 0 )
+    localStorage.setItem('focus', value);
+  else
+    getFocus();
 }
 
 
@@ -160,6 +149,14 @@ function getFocus() {
   else {
     focus.textContent = localStorage.getItem('focus')
   }
+}
+
+function renderName(value) {
+  name.textContent = value ? value : '';
+}
+
+function renderFocus(value) {
+  focus.textContent = value ? value : '';
 }
 
 async function getQuote() {
@@ -231,11 +228,22 @@ function setCity(event) {
 }
 
 
-name.addEventListener('keypress', setName);
+name.addEventListener('keypress', (e) => {
+  if(e.which === 13) name.blur();
+});
 name.addEventListener('blur', setName);
+name.addEventListener('focus', () => {
+  renderName('');
+});
 
-focus.addEventListener('keypress', setFocus);
+
+focus.addEventListener('keypress', (e) => {
+  if(e.which === 13) focus.blur();
+});
 focus.addEventListener('blur', setFocus);
+focus.addEventListener('focus', () => {
+  renderFocus('');
+});
 
 city.addEventListener('keypress', setCityToLS);
 city.addEventListener('blur', setCityToLS);
