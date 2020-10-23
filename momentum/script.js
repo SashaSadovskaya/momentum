@@ -17,6 +17,7 @@ const city = document.querySelector('.city');
 const humidity = document.querySelector('.weather-humidity');
 const wind = document.querySelector('.weather-wind');
 const error = document.querySelector("#error");
+const defaultCity = '[Enter city]';
 
 
 function showTime () {
@@ -186,8 +187,8 @@ function changeQuote(){
 }
 
 //Get weather
-
 async function getWeather() {
+  if (city.textContent === defaultCity) return;
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.textContent}&lang=en&appid=${appID}&units=metric`;
   const res = await fetch(url);
   const data = await res.json();
@@ -227,7 +228,7 @@ function renderCity(value) {
 
 function getCity() {
   if (localStorage.getItem('city') === null){
-    city.textContent = '[Enter city]';
+     city.textContent = defaultCity;
   }
   else {
     city.textContent = localStorage.getItem('city')
