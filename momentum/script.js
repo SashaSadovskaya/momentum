@@ -198,8 +198,7 @@ async function getWeather() {
   temperature.textContent = `${Math.round(data.main.temp)}°C`;
   // weatherDescription.textContent = data.weather[0].description;
   humidity.textContent = `Humidity: ${data.main.humidity}%`;
-  wind.textContent =`Wind: ${data.wind.speed} m/c`;
-  console.log(data)
+  wind.textContent =`Wind: ${Math.round(data.wind.speed)} m/c`;
 }
 
 function setCityToLS(e) {
@@ -215,7 +214,7 @@ function setCityToLS(e) {
 }
 
 function getCity() {
-  if (localStorage.getItem('city') === null){
+  if (localStorage.getItem('city') === ''){
     city.textContent = 'Choose the city';
   }
   else {
